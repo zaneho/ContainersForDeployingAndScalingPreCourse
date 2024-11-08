@@ -15,7 +15,9 @@ const server = http.createServer((req, res) => {
     });
 });
 
-const port = 3000;
-server.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+// Listen to the App Engine-specified port, or 8080 otherwise
+const PORT = process.env.PORT || 8080;
+// const port = 3000;
+server.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
