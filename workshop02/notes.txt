@@ -76,3 +76,16 @@ kubectl run mysql -ti --rm --image=mysql:8 -- /bin/sh
 
 # this command quick populate and output to yaml file
 kubectl create deploy bggapp-deploy -nbggns --image=stackupiss/bgg-backend:v1 --replicas=3 -oyaml --dry-run=client
+
+# NODE PORT
+For the service you wan to expose, change ClusterIP to NodePort
+this will open same port number eg 31000 on each pod
+
+kubectl get all -nbggns
+    to see eg 3000:30130/TCP.. 30130 auto assigned and opened on pod
+
+kubectl get nodes -owide
+    to see external IP of any
+
+thn access http://165.232.165.178:30130/
+now we manage to access without port-forwarding

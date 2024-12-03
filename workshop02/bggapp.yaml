@@ -56,7 +56,8 @@ metadata:
         app: bgg
         name: bggapp-svc
 spec:
-    type: ClusterIP
+    # type: ClusterIP
+    type: NodePort
     selector:
         app: bgg
         name: bggapp-po
