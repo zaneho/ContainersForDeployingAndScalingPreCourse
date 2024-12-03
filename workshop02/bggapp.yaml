@@ -57,10 +57,11 @@ metadata:
         name: bggapp-svc
 spec:
     # type: ClusterIP
-    type: NodePort
+    # type: NodePort
+    type: LoadBalancer
     selector:
         app: bgg
         name: bggapp-po
     ports:
-        - port: 3000
-          targetPort: bggapp-port
+        - port: 3000 # external
+          targetPort: bggapp-port # containerPort

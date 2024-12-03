@@ -89,3 +89,10 @@ kubectl get nodes -owide
 
 thn access http://165.232.165.178:30130/
 now we manage to access without port-forwarding
+
+# LOAD BALANCER
+if you have LB, it builds on top of  ClusterIP and NodePort
+LoadBalancer -> NodePort -> CluterIP [svc port:80, targetPort 3000] -> Pod [containerPort: 3000]
+
+kubectl get all -nbggns
+then you access via LB IP address and your app-svc pod port eg 3000.. not targetPort (this is to to comms wif container)
