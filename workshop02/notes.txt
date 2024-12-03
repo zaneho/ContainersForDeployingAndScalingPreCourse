@@ -1,0 +1,73 @@
+kubectl version --client
+download config from DO kubernates
+mkdir .kube in home dir C:/Users/urname
+kubectl cluster-info
+kubectl get pod
+kubectl get pod -nkube-system
+
+kubectl create namespace myns
+kubectl get namespace
+
+kubectl describe ns myns
+# same as kubectl describe ns/myns
+kubectl delete ns/myns
+
+kubectl api-resources
+
+# create ns via yaml file
+kubectl create -f myns.yaml
+kubectl get ns -ldept=eng
+kubectl get ns --show-labels
+kubectl delete ns -lcode=eng01
+
+if create (imperative command, dumb) again with same name is error
+if use apply (smarter) it will check if rsc alr thr thn rewrite, so usually we use apply
+
+
+# POD
+kubectl apply -f dov-bear.yaml
+kubectl get all -nmyns
+kubectl describe pods dov-pod -n myns
+kubectl port-forward pod/dov-pod 8080:3000
+    ^ if exit cannot access, its temporary
+kubectl describe pods dov-pod -n myns
+kubectl delete pod dov-pod -nmyns
+
+kubectl logs po/dov-pod -nmyns
+kubectl exec -ti pod/dov-pod -nmyns -- /bin/sh
+
+# DEPLOYMENT
+selector matchLabels is subset of template labels..
+
+kubectl apply -f deployment.yaml
+kubectl get deployment -nmyns
+kubectl describe deploy myapp-pod
+kubectl port-forward deployment/dov-deploy -n myns 8080:3000
+
+kubectl scale deploy/dov-deploy -nmyns --replica=5
+kubectl scale deploy/dov-deploy -nmyns --replica=1
+
+# SERVICE
+can write under deployment after ---
+kubectl describe svc/dov-svc -n myns
+
+kubectl port-forward svc/dov-svc -nmyns 8080:8080
+kubectl port-forward svc/dov-svc -nmyns 5000:8080
+8080 is service port, not container port
+local is 5000
+
+
+# DEUBG
+kubectl run debug -ti --rm -ndefault --image=nicolaka/netshoot -- /bin/bash
+nslookup dov-svc.myns.svc.cluster.local
+nslookup -q=srv _web._TCP.dov-svc.myns.svc.cluster.local
+
+# CONFIG myapp
+kubectl apply -f config.yaml
+kubectl get cm,secret -nmyns
+kubectl delete -f config.yaml
+
+#workshop 2
+1 file for config and ns. put pw in secret, env in config map
+1 file for db
+1 file for app
