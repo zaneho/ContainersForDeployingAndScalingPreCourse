@@ -32,19 +32,19 @@ spec:
                   ports:
                       - name: bggapp-port
                         containerPort: 3000
-                  # readinessProbe:
-                  #     httpGet:
-                  #     path: /healthz
-                  #     port: bggapp-port
-                  #     timeoutSeconds: 5
-                  #     failureThreshold: 1
-                  # livenessProbe:
-                  #     httpGet:
-                  #     path: /healthz
-                  #     port: bggapp-port
-                  #     timeoutSeconds: 5
-                  #     failureThreshold: 3
-                  #     successThreshold: 1
+                  readinessProbe:
+                      httpGet:
+                          path: /healthz
+                          port: bggapp-port
+                      timeoutSeconds: 5
+                      failureThreshold: 1
+                  livenessProbe:
+                      httpGet:
+                          path: /healthz
+                          port: bggapp-port
+                      timeoutSeconds: 5
+                      failureThreshold: 3
+                      successThreshold: 1
 
 ---
 apiVersion: v1

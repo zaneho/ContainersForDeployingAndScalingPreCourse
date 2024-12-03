@@ -71,3 +71,8 @@ kubectl delete -f config.yaml
 1 file for config and ns. put pw in secret, env in config map
 1 file for db
 1 file for app
+
+kubectl run mysql -ti --rm --image=mysql:8 -- /bin/sh
+
+# this command quick populate and output to yaml file
+kubectl create deploy bggapp-deploy -nbggns --image=stackupiss/bgg-backend:v1 --replicas=3 -oyaml --dry-run=client
