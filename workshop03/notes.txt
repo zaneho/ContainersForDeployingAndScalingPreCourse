@@ -50,3 +50,9 @@ ing is shortform for ingress
     kubectl get ing -nbggns
     kubectl describe ing -nbggns 
 
+kubectl get all,ing,pv,pvc -ncodeserver
+
+# Metrics Server... so can monitor when you scale
+kubectl top nodes
+kubectl top po -A --sort-by=memory
+
