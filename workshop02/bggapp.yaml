@@ -22,7 +22,7 @@ spec:
         spec:
             containers:
                 - name: bggapp-container
-                  image: stackupiss/bgg-backend:v1
+                  image: stackupiss/bgg-backend:v2
                   imagePullPolicy: IfNotPresent
                   envFrom:
                       - configMapRef:

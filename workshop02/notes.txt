@@ -96,3 +96,11 @@ LoadBalancer -> NodePort -> CluterIP [svc port:80, targetPort 3000] -> Pod [cont
 
 kubectl get all -nbggns
 then you access via LB IP address and your app-svc pod port eg 3000.. not targetPort (this is to to comms wif container)
+
+# UPGRADES
+Argo Rollout
+
+kubectl rollout status deploy/bggapp-deploy -nbggns
+kubectl rollout history deploy/bggapp-deploy -nbggns
+
+kubectl rollout undo deployment bggapp-deploy -nbggns --to-revision=2
