@@ -28,7 +28,7 @@ if use apply (smarter) it will check if rsc alr thr thn rewrite, so usually we u
 kubectl apply -f dov-bear.yaml
 kubectl get all -nmyns
 kubectl describe pods dov-pod -n myns
-kubectl port-forward pod/dov-pod 8080:3000
+kubectl port-forward pod/dov-pod 8080:3000 -nmyns
     ^ if exit cannot access, its temporary
 kubectl describe pods dov-pod -n myns
 kubectl delete pod dov-pod -nmyns

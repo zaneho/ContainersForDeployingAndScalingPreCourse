@@ -1,0 +1,52 @@
+https://artifacthub.io/packages/helm/bitnami/kafka
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm repo list
+
+helm install [RELEASE_NAME] ingress-nginx/ingress-nginx
+
+helm template myingress ingress-nginx/ingress-nginx -nmyns > ingress.yaml
+
+helm install my-ingress ingress-nginx/ingress-nginx -ningress-nginx --create-namespace
+kubectl get all -ningress-nginx
+
+helm list -A 
+
+chart templates + values file (you can override using your own values file.yaml) => YAML for deploy
+when it gets override is when u run 'helm install .... -f values.yaml' if you not sure you can run 'helm template ... -f values.yaml'
+
+hostpath created on node
+emptydir tied to lifetime of the pod
+    specs:
+        volumes:
+            - name: data-vol
+                emptyDir: {}
+    ..
+        containers:
+            ...
+            volumeMounts:
+                - name: data-vol
+                 mounthPath: /opt/data
+
+create vol thn mount into individual container
+
+# PERSISTENT VOLUME
+kubectl get storageclass OR k get sc
+
+kubectl get ingressclass
+    to check controller installed
+kubectl get pvc,pv -nbggns
+kubectl describe persistentvolume/pvc-c66c72e3-dabc-4432-9a43-94e2ff8809b7 -nbggns
+
+# LB and ingress
+ingress.nginx Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer
+nip.io
+
+kubectl get svc -A
+get IP of ingress controller, put in host under ingress rules
+
+ing is shortform for ingress
+    kubectl get ing -nbggns
+    kubectl describe ing -nbggns 
+

@@ -65,3 +65,25 @@ spec:
     ports:
         - port: 3000 # external
           targetPort: bggapp-port # containerPort
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: bggapp-ing
+    namespace: bggns
+    labels:
+        app: bgg
+spec:
+    ingressClassName: nginx
+    rules:
+        - host: bgg-139.59.221.43.nip.io
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: bggapp-svc
+                            port:
+                                name: bggapp-port

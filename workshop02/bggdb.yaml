@@ -20,6 +20,10 @@ spec:
                 app: bgg
                 name: bggdb-po
         spec:
+            volumes:
+                - name: data-vol
+                  persistentVolumeClaim:
+                      claimName: bggdb-pvc
             containers:
                 - name: bggdb-container
                   image: stackupiss/bgg-database:v1
@@ -27,6 +31,9 @@ spec:
                   ports:
                       - name: bggdb-port
                         containerPort: 3306
+                  volumeMounts:
+                      - name: data-vol
+                        mountPath: /var/lib/mysql
 
 ---
 apiVersion: v1
