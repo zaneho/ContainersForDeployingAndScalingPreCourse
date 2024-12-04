@@ -1,0 +1,97 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: workspace-pvc
+    namespace: codeserver
+    labels:
+        app: codeserver
+spec:
+    storageClassName: do-block-storage-retain
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cs-deploy
+    namespace: codeserver
+    labels:
+        app: cs
+        name: cs-deploy
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: cs
+            name: cs-po
+    template:
+        metadata:
+            name: cs-po
+            labels:
+                app: cs
+                name: cs-po
+        spec:
+            volumes:
+                - name: workspace-vol
+                  persistentVolumeClaim:
+                      claimName: workspace-pvc
+            containers:
+                - name: cs-container
+                  image: linuxserver/code-server:amd64-4.95.3
+                  imagePullPolicy: IfNotPresent
+                  envFrom:
+                      - configMapRef:
+                            name: cs-cm
+                      - secretRef:
+                            name: cs-secret
+                  ports:
+                      - name: cs-port
+                        containerPort: 8443
+                  volumeMounts:
+                      - name: workspace-vol
+                        mountPath: /config/workspace
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: cs-svc
+    namespace: codeserver
+    labels:
+        app: cs
+        name: cs-svc
+spec:
+    type: ClusterIP
+    selector:
+        app: cs
+        name: cs-po
+    ports:
+        - port: 8443
+          targetPort: cs-port
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: cs-ing
+    namespace: codeserver
+    labels:
+        app: cs
+spec:
+    ingressClassName: nginx
+    rules:
+        - host: code-139.59.221.43.nip.io
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: cs-svc
+                            port:
+                                number: 8443
