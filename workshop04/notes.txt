@@ -1,0 +1,39 @@
+# Metrics Server
+kubectl top no
+kubectl top po -A
+
+
+# Kustomization
+https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/
+
+kubectl apply -k .
+kubectl get cm -ndev-ns
+kubectl describe po -ndev-ns
+kubectl delete -k .
+
+kubectl describe secrets -ndev-ns
+
+kubectl get secret/abc -nmyns -ojsonpath="{.data.API_KEY}" | base64 -d -
+
+
+# HEADLESS is without IP address (hsvc)
+
+everything same except
+    clusterIP: none
+
+get service IP address
+nslookup dov-svc.dovns.svc.cluster.local
+
+headful gets one IP
+headless gets ports behind it
+
+benefit: client can decide which port to go to.. when one of the pod dies
+when you need to know the port: cluster, need know peer to peer.. so u need headless
+pod die IP address changes
+
+
+# StatefulSet
+you need cr8 headless service first
+pvc is creaeted tgt with pod, and when it dies it will reattach
+
+nslookup db-sts-0.db-hsvc.dbns.svc.cluster.local

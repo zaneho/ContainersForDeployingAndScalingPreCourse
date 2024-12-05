@@ -1,0 +1,84 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: db-hsvc
+    namespace: db-ns
+spec:
+    clusterIP: None
+    selector:
+        app: db
+    ports:
+        - port: 3306
+          targetPort: 3306
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    name: db-sts
+    namespace: db-ns
+spec:
+    replicas: 2
+    serviceName: db-hsvc
+    selector:
+        matchLabels:
+            app: db
+    volumeClaimTemplates:
+        - metadata:
+              name: data-vol
+          spec:
+              accessModes:
+                  - ReadWriteOnce
+              resources:
+                  requests:
+                      storage: 1Gi
+              storageClassName: do-block-storage
+
+    template:
+        metadata:
+            name: db-po
+            labels:
+                app: db
+        spec:
+            containers:
+                - name: mysql-container
+                  image: mysql:8
+                  imagePullPolicy: IfNotPresent
+                  env:
+                      - name: MYSQL_ROOT_PASSWORD
+                        value: changeit
+                  ports:
+                      - containerPort: 3306
+                  volumeMounts:
+                      - name: data-vol
+                        mountPath: /var/lib/mysql
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: db-write
+    namespace: db-ns
+spec:
+    type: ClusterIP
+    selector:
+        app: db
+        apps.kubernetes.io/pod-index: "0"
+    ports:
+        - port: 3306
+          targetPort: 3306
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: db-reads
+    namespace: db-ns
+spec:
+    type: ClusterIP
+    selector:
+        app: db
+    ports:
+        - port: 3306
+          targetPort: 3306
