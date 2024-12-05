@@ -18,6 +18,7 @@ data:
     MINIO_API_PORT_NUMBER: "9000"
     MINIO_CONSOLE_PORT_NUMBER: "9090"
 
+# SECRET shld seperate and add in .gitignore
 ---
 apiVersion: v1
 kind: Secret
